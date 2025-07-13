@@ -1,13 +1,13 @@
-# 🍽️ Zomato Data Pipeline: Extract, Transform, Load with AWS, Spark & Snowflake 📊
+# 🍽️ Zomato Data Pipeline: Extract, Transform, Load with AWS Glue (PySpark) & Snowflake 📊
 
 🚗 **Project Overview**
 
-The **Zomato Data Pipeline** project automates the extraction, transformation, and loading of restaurant data using **AWS services**, **Apache Spark**, and **Snowflake**. The pipeline processes a public **Kaggle Zomato dataset**, filtering it specifically for **restaurants located in Bangalore**. With integration into **Power BI** and **QuickSight**, it enables interactive dashboards and real-time analytics for food trends and business performance.
+The **Zomato Data Pipeline** project automates the extraction, transformation, and loading of restaurant data using **AWS services**, **AWS Glue (PySpark)**, and **Snowflake**. The pipeline processes a public **Kaggle Zomato dataset**, filtering it specifically for **restaurants located in Bangalore**. With integration into **Power BI** and **QuickSight**, it enables interactive dashboards and real-time analytics for food trends and business performance.
 
 ### Key Features:
 - 📥 **Data Extraction from Kaggle**: Use the publicly available Zomato dataset from **Kaggle** as the primary data source.
 - 🏙️ **Bangalore-Focused Insights**: Filter the data to include only **restaurants in Bangalore** for targeted analytics.
-- 🔄 **Data Transformation**: Clean, standardize, and enrich the raw data using **Apache Spark** and **AWS Glue**.
+- 🔄 **Data Transformation**: Clean, standardize, and enrich the raw data using **PySpark scripts within AWS Glue**.
 - 📊 **Seamless Data Analysis**: Query and analyze data using **Amazon Athena** and **Snowflake**.
 - ⚙️ **Fully Automated Workflow**: Automate the entire pipeline using **Apache Airflow** and **Docker**.
 - 📱 **Interactive Dashboards**: Visualize key insights with **Power BI** and **AWS QuickSight**.
@@ -18,13 +18,12 @@ This project brings Zomato’s Bangalore restaurant data to life through a scala
 
 🛠️ **Architecture & Services Used**
 
-The pipeline integrates with a modern data stack combining AWS tools and Spark for scalable data processing:
+The pipeline integrates with a modern data stack combining AWS tools and Glue for scalable data processing:
 
 ### Services Involved:
 - **Kaggle Dataset**: Public Zomato dataset used as the raw data source.
 - **AWS S3**: Store raw and transformed data securely.
-- **Apache Spark**: Perform large-scale transformations and filtering for Bangalore restaurants.
-- **AWS Glue**: Clean, enrich, and catalog the transformed dataset.
+- **AWS Glue (PySpark)**: Perform transformations and filtering for Bangalore restaurants using PySpark scripts.
 - **AWS Glue Crawler**: Automatically infer schemas and register tables in the Glue Data Catalog.
 - **Snowflake**: Store analysis-ready data for scalable querying.
 - **Snowpipe**: Enable continuous ingestion from S3 into Snowflake.
@@ -37,7 +36,7 @@ The pipeline integrates with a modern data stack combining AWS tools and Spark f
 
 ### Pipeline Flow:
 1. **Extract**: Download Zomato data from **Kaggle**, upload to **S3**.
-2. **Transform**: Use **Spark** and **Glue** to clean and filter the dataset for **Bangalore**.
+2. **Transform**: Use **AWS Glue (PySpark)** to clean and filter the dataset for **Bangalore**.
 3. **Store**: Save transformed data to a new **S3** bucket.
 4. **Catalog**: Use **Glue Crawler** to register schemas in Glue Data Catalog.
 5. **Load**: Use **Snowpipe** to load data continuously into **Snowflake**.
@@ -54,8 +53,9 @@ The pipeline integrates with a modern data stack combining AWS tools and Spark f
 - Trigger an Airflow DAG to initiate the pipeline.
 
 ### 2. Data Transformation
-- **Apache Spark** filters the dataset to only include **restaurants in Bangalore**.
-- Spark jobs clean, normalize, and enrich the data.
+- **AWS Glue** executes **PySpark scripts** to:
+  - Filter the dataset to only include **restaurants in Bangalore**.
+  - Perform cleaning, normalization, and enrichment.
 - Transformed data is stored in `transformed_data/` on **S3**.
 
 ### 3. Cataloging with AWS Glue
@@ -84,8 +84,8 @@ The pipeline integrates with a modern data stack combining AWS tools and Spark f
 - Zomato data is downloaded from **Kaggle** and uploaded to **AWS S3** using Airflow.
 
 ### 2. Data Transformation:
-- Spark transforms and filters the data for **Bangalore** city.
-- AWS Glue handles schema normalization and optional enrichment.
+- Data is transformed in **AWS Glue using PySpark**.
+- Glue jobs clean and filter the dataset for **Bangalore** city.
 
 ### 3. Data Storage:
 - Raw and transformed datasets are stored in different folders in **S3**.
@@ -103,19 +103,18 @@ The pipeline integrates with a modern data stack combining AWS tools and Spark f
 🔄 **How to Set Up the Zomato Data Pipeline**
 
 ### Step 1: Download Dataset from Kaggle
-- Visit [Kaggle Zomato Dataset](https://www.kaggle.com/datasets) and download the restaurant dataset.
+- Download the restaurant dataset from Kaggle.
 
 ### Step 2: Upload to S3
 - Create an S3 bucket with folders: `raw_data/` and `transformed_data/`.
 - Upload the Kaggle dataset to `raw_data/`.
 
-### Step 3: Configure Apache Spark
-- Run a Spark job (locally or via EMR) to filter Bangalore-specific data and perform cleaning.
+### Step 3: Set Up AWS Glue (PySpark)
+- Create a Glue Job using **PySpark** for cleaning and filtering Bangalore-specific data.
 - Output the result to `transformed_data/` on S3.
 
-### Step 4: Set Up AWS Glue
-- Create a Glue Job for final cleaning and column standardization.
-- Set up a Glue Crawler to catalog the `transformed_data/` in S3.
+### Step 4: Configure AWS Glue Crawler
+- Set up a Glue Crawler to catalog the `transformed_data/` in S3 and register it in the Glue Data Catalog.
 
 ### Step 5: Configure Snowflake & Snowpipe
 - Create corresponding tables in Snowflake.
@@ -135,7 +134,7 @@ The pipeline integrates with a modern data stack combining AWS tools and Spark f
 The pipeline follows this flow:
 
 1. **Data Extraction**: Zomato dataset from Kaggle is stored in S3.
-2. **Data Transformation**: Apache Spark + Glue cleans and filters data for Bangalore.
+2. **Data Transformation**: AWS Glue with PySpark cleans and filters data for Bangalore.
 3. **Data Loading**: Transformed data is loaded into Snowflake via Snowpipe.
 4. **Query & Analyze**: Athena and Snowflake enable deep SQL analysis.
 5. **Visualization**: Power BI and QuickSight dashboards deliver insights.
@@ -147,7 +146,7 @@ The pipeline follows this flow:
 - 🔍 **Sentiment Analysis**: Use NLP models on restaurant reviews.
 - 📱 **Mobile Dashboards**: Deploy dashboards via mobile BI apps.
 - 🛰️ **Real-Time Streaming**: Add live ingestion using **AWS Kinesis**.
-- ⚡ **Kubernetes-Based Scaling**: Run Spark on **EKS** for horizontal scalability.
+- ⚡ **Kubernetes-Based Scaling**: Run Glue Spark on **EKS** for horizontal scalability.
 - 🤖 **ML Recommendations**: Suggest restaurants based on trends and pricing.
 
 ---
